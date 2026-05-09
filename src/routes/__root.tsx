@@ -97,20 +97,6 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
-const studentLinks = [
-  { to: "/", label: "الرئيسية", exact: true },
-  { to: "/plan", label: "خطتي" },
-  { to: "/skills", label: "المهارات" },
-  { to: "/remedial", label: "الخطة العلاجية" },
-  { to: "/career", label: "المسار المهني" },
-  { to: "/reports", label: "تقاريري" },
-] as const;
-
-const mentorLinks = [
-  { to: "/mentor", label: "لوحتي", exact: true },
-  { to: "/mentor/students", label: "الطلاب" },
-  { to: "/mentor/planning", label: "التخطيط" },
-] as const;
 
 function NavBar() {
   const { user } = useAuth();
