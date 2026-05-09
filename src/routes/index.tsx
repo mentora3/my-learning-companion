@@ -30,15 +30,6 @@ function Home() {
   const performance = 78;
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-      {/* Welcome header with logo */}
-      <div className="flex items-center gap-4">
-        <img src={logoUrl} alt="Mentora" className="h-16 w-16 object-contain bg-white rounded-2xl p-2 shadow-[var(--shadow-soft)]" />
-        <div className="flex-1">
-          <h1 className="text-2xl">مرحبًا بك 👋</h1>
-          <p className="text-sm text-muted-foreground mt-1">جاهزين نواصل رحلتك نحو التميّز؟</p>
-        </div>
-      </div>
-
       {/* Performance hero */}
       <div className="rounded-2xl bg-[image:var(--gradient-hero)] p-6 shadow-[var(--shadow-elegant)] text-nav-foreground relative overflow-hidden">
         <div className="absolute -left-10 -top-10 w-48 h-48 rounded-full bg-primary/30 blur-3xl" />
