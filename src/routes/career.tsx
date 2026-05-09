@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/career")({
@@ -96,7 +97,7 @@ function CareerPage() {
               </div>
             ))}
           </div>
-          <button className="mt-4 w-full py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors">
+          <button onClick={() => toast.success("تم فتح تفاصيل الوظيفة")} className="mt-4 w-full py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors">
             عرض التفاصيل ←
           </button>
         </div>
@@ -121,7 +122,7 @@ function CareerPage() {
             </div>
           ))}
         </div>
-        <button className="mt-4 w-full py-2.5 rounded-lg border border-border text-foreground text-sm font-bold hover:bg-muted transition-colors">
+        <button onClick={() => toast("جارٍ تحميل المزيد من الوظائف…")} className="mt-4 w-full py-2.5 rounded-lg border border-border text-foreground text-sm font-bold hover:bg-muted transition-colors">
           استكشف المزيد من الوظائف
         </button>
       </div>
@@ -152,7 +153,7 @@ function CareerPage() {
         <p className="text-sm text-nav-foreground/80 mb-4">
           ابدأ ببناء حقيبة أعمالك واطلع على فرص التدريب المتاحة لتعزيز فرصك في سوق العمل.
         </p>
-        <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors">
+        <button onClick={() => toast.success("تم تسجيلك في المسار 🚀")} className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors">
           استكشاف الفرص ←
         </button>
       </div>
