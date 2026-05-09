@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import logoUrl from "../assets/mentora-logo.png?url";
 
 function NotFoundComponent() {
   return (
