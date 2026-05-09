@@ -89,21 +89,32 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function NavBar() {
   const linkClass =
-    "px-4 py-2 rounded-lg text-sm font-medium text-nav-foreground/80 hover:bg-primary hover:text-primary-foreground transition-colors";
+    "px-3 py-2 rounded-lg text-sm font-medium text-nav-foreground/80 hover:bg-primary hover:text-primary-foreground transition-colors whitespace-nowrap";
   const activeClass = "bg-primary text-primary-foreground";
   return (
     <header className="sticky top-0 z-50 bg-nav text-nav-foreground shadow-[var(--shadow-elegant)]">
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-5 py-3">
-        <Link to="/" className="flex items-center gap-2">
+      <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3">
+        <Link to="/" className="flex items-center gap-2 shrink-0">
           <img src={logoUrl} alt="Mentora" className="h-9 w-9 object-contain bg-white rounded-lg p-1" />
-          <span className="text-2xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">Mentora</span>
+          <span className="text-xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent hidden sm:inline">Mentora</span>
         </Link>
-        <nav className="flex items-center gap-1 flex-wrap">
+        <nav className="flex items-center gap-1 overflow-x-auto scrollbar-none">
           <Link to="/" className={linkClass} activeOptions={{ exact: true }} activeProps={{ className: `${linkClass} ${activeClass}` }}>الرئيسية</Link>
           <Link to="/plan" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>خطتي</Link>
+          <Link to="/skills" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>المهارات</Link>
+          <Link to="/remedial" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>الخطة العلاجية</Link>
           <Link to="/career" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>المسار المهني</Link>
           <Link to="/reports" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>تقاريري</Link>
         </nav>
+        <div className="flex items-center gap-2 shrink-0">
+          <button className="relative p-2 rounded-lg hover:bg-white/10 transition-colors" aria-label="الإشعارات">
+            <span className="text-lg">🔔</span>
+            <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-destructive text-[9px] font-bold text-white flex items-center justify-center">3</span>
+          </button>
+          <div className="h-9 w-9 rounded-full bg-[image:var(--gradient-primary)] flex items-center justify-center font-black text-primary-foreground text-sm">
+            ط
+          </div>
+        </div>
       </div>
     </header>
   );

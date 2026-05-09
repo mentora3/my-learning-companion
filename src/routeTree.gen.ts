@@ -9,14 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as RemedialRouteImport } from './routes/remedial'
 import { Route as PlanRouteImport } from './routes/plan'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SkillsRoute = SkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RemedialRoute = RemedialRouteImport.update({
+  id: '/remedial',
+  path: '/remedial',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlanRoute = PlanRouteImport.update({
@@ -39,43 +51,72 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/plan': typeof PlanRoute
+  '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
+  '/skills': typeof SkillsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/plan': typeof PlanRoute
+  '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
+  '/skills': typeof SkillsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/plan': typeof PlanRoute
+  '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
+  '/skills': typeof SkillsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/career' | '/plan' | '/reports'
+  fullPaths: '/' | '/career' | '/plan' | '/remedial' | '/reports' | '/skills'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/career' | '/plan' | '/reports'
-  id: '__root__' | '/' | '/career' | '/plan' | '/reports'
+  to: '/' | '/career' | '/plan' | '/remedial' | '/reports' | '/skills'
+  id:
+    | '__root__'
+    | '/'
+    | '/career'
+    | '/plan'
+    | '/remedial'
+    | '/reports'
+    | '/skills'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CareerRoute: typeof CareerRoute
   PlanRoute: typeof PlanRoute
+  RemedialRoute: typeof RemedialRoute
   ReportsRoute: typeof ReportsRoute
+  SkillsRoute: typeof SkillsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/skills': {
+      id: '/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof SkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reports': {
       id: '/reports'
       path: '/reports'
       fullPath: '/reports'
       preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/remedial': {
+      id: '/remedial'
+      path: '/remedial'
+      fullPath: '/remedial'
+      preLoaderRoute: typeof RemedialRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plan': {
@@ -106,7 +147,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CareerRoute: CareerRoute,
   PlanRoute: PlanRoute,
+  RemedialRoute: RemedialRoute,
   ReportsRoute: ReportsRoute,
+  SkillsRoute: SkillsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
