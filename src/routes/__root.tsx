@@ -117,10 +117,26 @@ function NavBar() {
 }
 
 function AppShell() {
+  const { user } = useAuth();
+  const isMentor = user?.role === "mentor";
   return (
-    <NotificationsProvider role={useAuth().user!.role}>
+    <NotificationsProvider role={user!.role}>
       <div className="min-h-screen bg-background">
         <NavBar />
+        <div className="max-w-5xl mx-auto px-4 pt-6">
+          <div className="flex items-center gap-4 mb-4">
+            <img src={logoUrl} alt="Mentora" className="h-14 w-14 object-contain bg-white rounded-2xl p-2 shadow-[var(--shadow-soft)]" />
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl truncate">
+                مرحبًا {user?.name || (isMentor ? "مرشدنا" : "بك")} 👋
+              </h1>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                {isMentor ? "تابع طلابك ووجّههم لأفضل النتائج." : "جاهزين نواصل رحلتك نحو التميّز؟"}
+              </p>
+            </div>
+          </div>
+          <PillNav />
+        </div>
         <main className="max-w-5xl mx-auto px-4 py-6 pb-28">
           <Outlet />
         </main>
