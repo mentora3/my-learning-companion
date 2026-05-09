@@ -98,9 +98,10 @@ function NavBar() {
           <img src={logoUrl} alt="Mentora" className="h-9 w-9 object-contain bg-white rounded-lg p-1" />
           <span className="text-2xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">Mentora</span>
         </Link>
-        <nav className="flex items-center gap-1">
+        <nav className="flex items-center gap-1 flex-wrap">
           <Link to="/" className={linkClass} activeOptions={{ exact: true }} activeProps={{ className: `${linkClass} ${activeClass}` }}>الرئيسية</Link>
           <Link to="/plan" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>خطتي</Link>
+          <Link to="/career" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>المسار المهني</Link>
           <Link to="/reports" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>تقاريري</Link>
         </nav>
       </div>
