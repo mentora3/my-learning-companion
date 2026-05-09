@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/reports")({
@@ -141,7 +142,7 @@ function ReportsPage() {
         <p className="text-sm text-nav-foreground/80 mb-4">
           نوصيك بالتركيز على تطوير مهاراتك الرقمية من خلال دورة "أساسيات تحليل البيانات" المتاحة في المنصة.
         </p>
-        <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors">
+        <button onClick={() => toast.success("تم تسجيلك في المسار 🚀")} className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors">
           استكشاف الدورة ←
         </button>
       </div>

@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/remedial")({
@@ -101,7 +102,7 @@ function RemedialPage() {
         })}
       </div>
 
-      <button className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-colors shadow-[var(--shadow-glow)]">
+      <button onClick={() => toast.success("تم فتح الخطة الكاملة 📋")} className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-colors shadow-[var(--shadow-glow)]">
         عرض الخطة الكاملة ←
       </button>
     </div>

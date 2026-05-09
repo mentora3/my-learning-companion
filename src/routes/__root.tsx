@@ -4,12 +4,21 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import logoUrl from "../assets/mentora-logo.png?url";
+import { AuthProvider, useAuth } from "../lib/auth";
+import { NotificationsProvider } from "../lib/notifications";
+import { NotificationsMenu } from "../components/NotificationsMenu";
+import { ProfileMenu } from "../components/ProfileMenu";
+import { AiChat } from "../components/AiChat";
+import { Login } from "../components/Login";
 
 function NotFoundComponent() {
   return (
@@ -17,14 +26,8 @@ function NotFoundComponent() {
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">الصفحة غير موجودة</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          الصفحة التي تبحث عنها غير متاحة.
-        </p>
         <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
+          <Link to="/" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
             العودة للرئيسية
           </Link>
         </div>
@@ -40,7 +43,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold text-foreground">حدث خطأ ما</h1>
-        <p className="mt-2 text-sm text-muted-foreground">يرجى المحاولة مرة أخرى.</p>
         <button
           onClick={() => { router.invalidate(); reset(); }}
           className="mt-6 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
@@ -57,8 +59,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Mentora — منصة ليان التعليمية الذكية" },
-      { name: "description", content: "منصة Mentora التعليمية الذكية لمتابعة الأداء، الخطط الدراسية والتقارير." },
+      { title: "Mentora — منصة التوجيه التعليمي الذكي" },
+      { name: "description", content: "Mentora: منصة تعليمية ذكية لمتابعة الأداء والمسار المهني للطلاب والمرشدين." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -87,36 +89,104 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+const studentLinks = [
+  { to: "/", label: "الرئيسية", exact: true },
+  { to: "/plan", label: "خطتي" },
+  { to: "/skills", label: "المهارات" },
+  { to: "/remedial", label: "الخطة العلاجية" },
+  { to: "/career", label: "المسار المهني" },
+  { to: "/reports", label: "تقاريري" },
+] as const;
+
+const mentorLinks = [
+  { to: "/mentor", label: "لوحتي", exact: true },
+  { to: "/mentor/students", label: "الطلاب" },
+  { to: "/mentor/planning", label: "التخطيط" },
+] as const;
+
 function NavBar() {
+  const { user } = useAuth();
+  const links = user?.role === "mentor" ? mentorLinks : studentLinks;
   const linkClass =
     "px-3 py-2 rounded-lg text-sm font-medium text-nav-foreground/80 hover:bg-primary hover:text-primary-foreground transition-colors whitespace-nowrap";
   const activeClass = "bg-primary text-primary-foreground";
+
   return (
-    <header className="sticky top-0 z-50 bg-nav text-nav-foreground shadow-[var(--shadow-elegant)]">
+    <header className="sticky top-0 z-30 bg-nav text-nav-foreground shadow-[var(--shadow-elegant)]">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3">
-        <Link to="/" className="flex items-center gap-2 shrink-0">
+        <Link to={user?.role === "mentor" ? "/mentor" : "/"} className="flex items-center gap-2 shrink-0">
           <img src={logoUrl} alt="Mentora" className="h-9 w-9 object-contain bg-white rounded-lg p-1" />
           <span className="text-xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent hidden sm:inline">Mentora</span>
         </Link>
-        <nav className="flex items-center gap-1 overflow-x-auto scrollbar-none">
-          <Link to="/" className={linkClass} activeOptions={{ exact: true }} activeProps={{ className: `${linkClass} ${activeClass}` }}>الرئيسية</Link>
-          <Link to="/plan" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>خطتي</Link>
-          <Link to="/skills" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>المهارات</Link>
-          <Link to="/remedial" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>الخطة العلاجية</Link>
-          <Link to="/career" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>المسار المهني</Link>
-          <Link to="/reports" className={linkClass} activeProps={{ className: `${linkClass} ${activeClass}` }}>تقاريري</Link>
+        <nav className="flex items-center gap-1 overflow-x-auto scrollbar-none flex-1 justify-center">
+          {links.map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={linkClass}
+              activeOptions={"exact" in l && l.exact ? { exact: true } : undefined}
+              activeProps={{ className: `${linkClass} ${activeClass}` }}
+            >
+              {l.label}
+            </Link>
+          ))}
         </nav>
-        <div className="flex items-center gap-2 shrink-0">
-          <button className="relative p-2 rounded-lg hover:bg-white/10 transition-colors" aria-label="الإشعارات">
-            <span className="text-lg">🔔</span>
-            <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-destructive text-[9px] font-bold text-white flex items-center justify-center">3</span>
-          </button>
-          <div className="h-9 w-9 rounded-full bg-[image:var(--gradient-primary)] flex items-center justify-center font-black text-primary-foreground text-sm">
-            ط
-          </div>
+        <div className="flex items-center gap-1 shrink-0">
+          <NotificationsMenu />
+          <ProfileMenu />
         </div>
       </div>
     </header>
+  );
+}
+
+function AppShell() {
+  return (
+    <NotificationsProvider role={useAuth().user!.role}>
+      <div className="min-h-screen bg-background">
+        <NavBar />
+        <main className="max-w-5xl mx-auto px-4 py-6 pb-28">
+          <Outlet />
+        </main>
+        <AiChat />
+      </div>
+    </NotificationsProvider>
+  );
+}
+
+function RoleRedirect() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => {
+    if (!user) return;
+    const onMentorRoute = pathname.startsWith("/mentor");
+    if (user.role === "mentor" && !onMentorRoute) {
+      router.navigate({ to: "/mentor" });
+    } else if (user.role === "student" && onMentorRoute) {
+      router.navigate({ to: "/" });
+    }
+  }, [user, pathname, router]);
+
+  return null;
+}
+
+function Gate() {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="h-10 w-10 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+  if (!user) return <Login />;
+  return (
+    <>
+      <RoleRedirect />
+      <AppShell />
+    </>
   );
 }
 
@@ -124,12 +194,10 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-background">
-        <NavBar />
-        <main className="max-w-5xl mx-auto px-5 py-8">
-          <Outlet />
-        </main>
-      </div>
+      <AuthProvider>
+        <Gate />
+        <Toaster position="top-center" richColors closeButton />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
