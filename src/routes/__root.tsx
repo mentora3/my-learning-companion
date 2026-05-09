@@ -114,31 +114,13 @@ const mentorLinks = [
 
 function NavBar() {
   const { user } = useAuth();
-  const links = user?.role === "mentor" ? mentorLinks : studentLinks;
-  const linkClass =
-    "px-3 py-2 rounded-lg text-sm font-medium text-nav-foreground/80 hover:bg-primary hover:text-primary-foreground transition-colors whitespace-nowrap";
-  const activeClass = "bg-primary text-primary-foreground";
-
   return (
     <header className="sticky top-0 z-30 bg-nav text-nav-foreground shadow-[var(--shadow-elegant)]">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3">
         <Link to={user?.role === "mentor" ? "/mentor" : "/"} className="flex items-center gap-2 shrink-0">
           <img src={logoUrl} alt="Mentora" className="h-9 w-9 object-contain bg-white rounded-lg p-1" />
-          <span className="text-xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent hidden sm:inline">Mentora</span>
+          <span className="text-xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">Mentora</span>
         </Link>
-        <nav className="flex items-center gap-1 overflow-x-auto scrollbar-none flex-1 justify-center">
-          {links.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className={linkClass}
-              activeOptions={"exact" in l && l.exact ? { exact: true } : undefined}
-              activeProps={{ className: `${linkClass} ${activeClass}` }}
-            >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
         <div className="flex items-center gap-1 shrink-0">
           <NotificationsMenu />
           <ProfileMenu />
