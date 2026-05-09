@@ -18,6 +18,7 @@ import { NotificationsProvider } from "../lib/notifications";
 import { NotificationsMenu } from "../components/NotificationsMenu";
 import { ProfileMenu } from "../components/ProfileMenu";
 import { AiChat } from "../components/AiChat";
+import { PillNav } from "../components/PillNav";
 import { Login } from "../components/Login";
 
 function NotFoundComponent() {
