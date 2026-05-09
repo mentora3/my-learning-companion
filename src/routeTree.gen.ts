@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as RemedialRouteImport } from './routes/remedial'
 import { Route as PlanRouteImport } from './routes/plan'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ const SkillsRoute = SkillsRouteImport.update({
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RemedialRoute = RemedialRouteImport.update({
+  id: '/remedial',
+  path: '/remedial',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlanRoute = PlanRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/plan': typeof PlanRoute
+  '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
   '/skills': typeof SkillsRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/plan': typeof PlanRoute
+  '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
   '/skills': typeof SkillsRoute
 }
@@ -60,21 +68,30 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/plan': typeof PlanRoute
+  '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
   '/skills': typeof SkillsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/career' | '/plan' | '/reports' | '/skills'
+  fullPaths: '/' | '/career' | '/plan' | '/remedial' | '/reports' | '/skills'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/career' | '/plan' | '/reports' | '/skills'
-  id: '__root__' | '/' | '/career' | '/plan' | '/reports' | '/skills'
+  to: '/' | '/career' | '/plan' | '/remedial' | '/reports' | '/skills'
+  id:
+    | '__root__'
+    | '/'
+    | '/career'
+    | '/plan'
+    | '/remedial'
+    | '/reports'
+    | '/skills'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CareerRoute: typeof CareerRoute
   PlanRoute: typeof PlanRoute
+  RemedialRoute: typeof RemedialRoute
   ReportsRoute: typeof ReportsRoute
   SkillsRoute: typeof SkillsRoute
 }
@@ -93,6 +110,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/reports'
       preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/remedial': {
+      id: '/remedial'
+      path: '/remedial'
+      fullPath: '/remedial'
+      preLoaderRoute: typeof RemedialRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plan': {
@@ -123,6 +147,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CareerRoute: CareerRoute,
   PlanRoute: PlanRoute,
+  RemedialRoute: RemedialRoute,
   ReportsRoute: ReportsRoute,
   SkillsRoute: SkillsRoute,
 }
