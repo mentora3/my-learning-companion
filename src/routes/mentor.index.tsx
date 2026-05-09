@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Users, TrendingUp, AlertTriangle, GraduationCap } from "lucide-react";
 
-export const Route = createFileRoute("/mentor")({
+export const Route = createFileRoute("/mentor/")({
   head: () => ({
     meta: [{ title: "Mentora — لوحة المرشد" }, { name: "description", content: "نظرة عامة لمرشد Mentora." }],
   }),
