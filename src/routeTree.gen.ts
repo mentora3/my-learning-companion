@@ -13,6 +13,7 @@ import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as RemedialRouteImport } from './routes/remedial'
 import { Route as PlanRouteImport } from './routes/plan'
+import { Route as MentorRouteImport } from './routes/mentor'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MentorIndexRouteImport } from './routes/mentor.index'
@@ -39,6 +40,11 @@ const PlanRoute = PlanRouteImport.update({
   path: '/plan',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MentorRoute = MentorRouteImport.update({
+  id: '/mentor',
+  path: '/mentor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CareerRoute = CareerRouteImport.update({
   id: '/career',
   path: '/career',
@@ -50,9 +56,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const MentorIndexRoute = MentorIndexRouteImport.update({
-  id: '/mentor/',
-  path: '/mentor/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => MentorRoute,
 } as any)
 const MentorStudentsRoute = MentorStudentsRouteImport.update({
   id: '/students',
@@ -68,6 +74,7 @@ const MentorPlanningRoute = MentorPlanningRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
+  '/mentor': typeof MentorRouteWithChildren
   '/plan': typeof PlanRoute
   '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
@@ -91,6 +98,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
+  '/mentor': typeof MentorRouteWithChildren
   '/plan': typeof PlanRoute
   '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
@@ -104,6 +112,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/career'
+    | '/mentor'
     | '/plan'
     | '/remedial'
     | '/reports'
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/career'
+    | '/mentor'
     | '/plan'
     | '/remedial'
     | '/reports'
@@ -138,11 +148,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CareerRoute: typeof CareerRoute
+  MentorRoute: typeof MentorRouteWithChildren
   PlanRoute: typeof PlanRoute
   RemedialRoute: typeof RemedialRoute
   ReportsRoute: typeof ReportsRoute
   SkillsRoute: typeof SkillsRoute
-  MentorIndexRoute: typeof MentorIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -175,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlanRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mentor': {
+      id: '/mentor'
+      path: '/mentor'
+      fullPath: '/mentor'
+      preLoaderRoute: typeof MentorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/career': {
       id: '/career'
       path: '/career'
@@ -191,10 +208,10 @@ declare module '@tanstack/react-router' {
     }
     '/mentor/': {
       id: '/mentor/'
-      path: '/mentor'
+      path: '/'
       fullPath: '/mentor/'
       preLoaderRoute: typeof MentorIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MentorRoute
     }
     '/mentor/students': {
       id: '/mentor/students'
@@ -213,14 +230,29 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface MentorRouteChildren {
+  MentorPlanningRoute: typeof MentorPlanningRoute
+  MentorStudentsRoute: typeof MentorStudentsRoute
+  MentorIndexRoute: typeof MentorIndexRoute
+}
+
+const MentorRouteChildren: MentorRouteChildren = {
+  MentorPlanningRoute: MentorPlanningRoute,
+  MentorStudentsRoute: MentorStudentsRoute,
+  MentorIndexRoute: MentorIndexRoute,
+}
+
+const MentorRouteWithChildren =
+  MentorRoute._addFileChildren(MentorRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CareerRoute: CareerRoute,
+  MentorRoute: MentorRouteWithChildren,
   PlanRoute: PlanRoute,
   RemedialRoute: RemedialRoute,
   ReportsRoute: ReportsRoute,
   SkillsRoute: SkillsRoute,
-  MentorIndexRoute: MentorIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
