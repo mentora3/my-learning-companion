@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import logoUrl from "../assets/mentora-logo.png?url";
 
 function NotFoundComponent() {
   return (
@@ -93,8 +94,9 @@ function NavBar() {
   return (
     <header className="sticky top-0 z-50 bg-nav text-nav-foreground shadow-[var(--shadow-elegant)]">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-5 py-3">
-        <Link to="/" className="text-2xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
-          Mentora
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logoUrl} alt="Mentora" className="h-9 w-9 object-contain bg-white rounded-lg p-1" />
+          <span className="text-2xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">Mentora</span>
         </Link>
         <nav className="flex items-center gap-1">
           <Link to="/" className={linkClass} activeOptions={{ exact: true }} activeProps={{ className: `${linkClass} ${activeClass}` }}>الرئيسية</Link>
