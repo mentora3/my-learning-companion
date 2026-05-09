@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as PlanRouteImport } from './routes/plan'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SkillsRoute = SkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
@@ -40,12 +46,14 @@ export interface FileRoutesByFullPath {
   '/career': typeof CareerRoute
   '/plan': typeof PlanRoute
   '/reports': typeof ReportsRoute
+  '/skills': typeof SkillsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/plan': typeof PlanRoute
   '/reports': typeof ReportsRoute
+  '/skills': typeof SkillsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/career': typeof CareerRoute
   '/plan': typeof PlanRoute
   '/reports': typeof ReportsRoute
+  '/skills': typeof SkillsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/career' | '/plan' | '/reports'
+  fullPaths: '/' | '/career' | '/plan' | '/reports' | '/skills'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/career' | '/plan' | '/reports'
-  id: '__root__' | '/' | '/career' | '/plan' | '/reports'
+  to: '/' | '/career' | '/plan' | '/reports' | '/skills'
+  id: '__root__' | '/' | '/career' | '/plan' | '/reports' | '/skills'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,10 +76,18 @@ export interface RootRouteChildren {
   CareerRoute: typeof CareerRoute
   PlanRoute: typeof PlanRoute
   ReportsRoute: typeof ReportsRoute
+  SkillsRoute: typeof SkillsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/skills': {
+      id: '/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof SkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reports': {
       id: '/reports'
       path: '/reports'
@@ -107,7 +124,18 @@ const rootRouteChildren: RootRouteChildren = {
   CareerRoute: CareerRoute,
   PlanRoute: PlanRoute,
   ReportsRoute: ReportsRoute,
+  SkillsRoute: SkillsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
