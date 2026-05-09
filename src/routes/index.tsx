@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import logoUrl from "../assets/mentora-logo.png?url";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
