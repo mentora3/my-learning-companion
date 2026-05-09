@@ -35,10 +35,6 @@ function MentorOverview() {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <div>
-        <h1 className="text-3xl">لوحة المرشد 🎓</h1>
-        <p className="text-muted-foreground mt-1">نظرة شاملة على أداء طلابك</p>
-      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Stat icon={Users} label="إجمالي الطلاب" value="32" tone="bg-primary/15 text-primary" />

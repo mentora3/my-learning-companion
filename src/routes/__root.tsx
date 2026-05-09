@@ -18,6 +18,7 @@ import { NotificationsProvider } from "../lib/notifications";
 import { NotificationsMenu } from "../components/NotificationsMenu";
 import { ProfileMenu } from "../components/ProfileMenu";
 import { AiChat } from "../components/AiChat";
+import { PillNav } from "../components/PillNav";
 import { Login } from "../components/Login";
 
 function NotFoundComponent() {
@@ -97,48 +98,16 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
-const studentLinks = [
-  { to: "/", label: "الرئيسية", exact: true },
-  { to: "/plan", label: "خطتي" },
-  { to: "/skills", label: "المهارات" },
-  { to: "/remedial", label: "الخطة العلاجية" },
-  { to: "/career", label: "المسار المهني" },
-  { to: "/reports", label: "تقاريري" },
-] as const;
-
-const mentorLinks = [
-  { to: "/mentor", label: "لوحتي", exact: true },
-  { to: "/mentor/students", label: "الطلاب" },
-  { to: "/mentor/planning", label: "التخطيط" },
-] as const;
 
 function NavBar() {
   const { user } = useAuth();
-  const links = user?.role === "mentor" ? mentorLinks : studentLinks;
-  const linkClass =
-    "px-3 py-2 rounded-lg text-sm font-medium text-nav-foreground/80 hover:bg-primary hover:text-primary-foreground transition-colors whitespace-nowrap";
-  const activeClass = "bg-primary text-primary-foreground";
-
   return (
     <header className="sticky top-0 z-30 bg-nav text-nav-foreground shadow-[var(--shadow-elegant)]">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3">
         <Link to={user?.role === "mentor" ? "/mentor" : "/"} className="flex items-center gap-2 shrink-0">
           <img src={logoUrl} alt="Mentora" className="h-9 w-9 object-contain bg-white rounded-lg p-1" />
-          <span className="text-xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent hidden sm:inline">Mentora</span>
+          <span className="text-xl font-black bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">Mentora</span>
         </Link>
-        <nav className="flex items-center gap-1 overflow-x-auto scrollbar-none flex-1 justify-center">
-          {links.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className={linkClass}
-              activeOptions={"exact" in l && l.exact ? { exact: true } : undefined}
-              activeProps={{ className: `${linkClass} ${activeClass}` }}
-            >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
         <div className="flex items-center gap-1 shrink-0">
           <NotificationsMenu />
           <ProfileMenu />
@@ -149,10 +118,26 @@ function NavBar() {
 }
 
 function AppShell() {
+  const { user } = useAuth();
+  const isMentor = user?.role === "mentor";
   return (
-    <NotificationsProvider role={useAuth().user!.role}>
+    <NotificationsProvider role={user!.role}>
       <div className="min-h-screen bg-background">
         <NavBar />
+        <div className="max-w-5xl mx-auto px-4 pt-6">
+          <div className="flex items-center gap-4 mb-4">
+            <img src={logoUrl} alt="Mentora" className="h-14 w-14 object-contain bg-white rounded-2xl p-2 shadow-[var(--shadow-soft)]" />
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl truncate">
+                مرحبًا {user?.name || (isMentor ? "مرشدنا" : "بك")} 👋
+              </h1>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                {isMentor ? "تابع طلابك ووجّههم لأفضل النتائج." : "جاهزين نواصل رحلتك نحو التميّز؟"}
+              </p>
+            </div>
+          </div>
+          <PillNav />
+        </div>
         <main className="max-w-5xl mx-auto px-4 py-6 pb-28">
           <Outlet />
         </main>
