@@ -59,8 +59,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Mentora — منصة التوجيه التعليمي الذكي" },
+      { title: "Mentora — نوجّهك اليوم.. لنجاحك غداً." },
       { name: "description", content: "Mentora: منصة تعليمية ذكية لمتابعة الأداء والمسار المهني للطلاب والمرشدين." },
+      { property: "og:title", content: "Mentora — نوجّهك اليوم.. لنجاحك غداً." },
+      { name: "twitter:title", content: "Mentora — نوجّهك اليوم.. لنجاحك غداً." },
+      { property: "og:description", content: "Mentora: منصة تعليمية ذكية لمتابعة الأداء والمسار المهني للطلاب والمرشدين." },
+      { name: "twitter:description", content: "Mentora: منصة تعليمية ذكية لمتابعة الأداء والمسار المهني للطلاب والمرشدين." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2c900714-2691-4291-ad87-faefd75e62e0/id-preview-70dcb13c--7d298a39-49ba-4123-8f22-41319d0bbde3.lovable.app-1778337109179.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2c900714-2691-4291-ad87-faefd75e62e0/id-preview-70dcb13c--7d298a39-49ba-4123-8f22-41319d0bbde3.lovable.app-1778337109179.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
