@@ -23,9 +23,9 @@ export function PillNav() {
   const base =
     "shrink-0 px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap border transition-all duration-200";
   const inactive =
-    "bg-card text-nav border-border/60 hover:border-primary/50 hover:text-primary";
+    "bg-card text-nav border-border/60 hover:bg-primary hover:!text-white hover:border-primary";
   const active =
-    "bg-primary text-primary-foreground border-primary shadow-[var(--shadow-glow)] scale-[1.02]";
+    "bg-primary !text-white border-primary shadow-[var(--shadow-glow)] scale-[1.02]";
 
   return (
     <nav
