@@ -71,7 +71,7 @@
    ```bash
    bun run build
    ```
-
+**ملاحظة: سيتم ربط الموقع مستقبلًا بقاعدة بيانات الجامعة بهدف تحليل بيانات الطلاب بشكل ذكي** 
 ---
 
 ## 🇬🇧 English Section
@@ -80,7 +80,7 @@
 A smart mentoring system that detects academic stumbling early and guides the student academically and professionally towards readiness for the labor market.
 
 ### Description
-Mentora is an AI-powered educational platform integrated with university systems. It continuously analyzes students' academic data and performance to provide personalized guidance, helping to identify and address academic difficulties at an early stage.
+Mentora is an AI-powered educational platform integrated with university systems. It continuously analyzes students' academic data and performance to provide personalized guidance, It will detect academic difficulties early and provide students with personalized educational plans to address those challenges, along with tailored practical experiences that help them succeed and prepare for the job market in alignment with Vision 2030.
 
 ### Introduction
 With traditional educational models failing to accommodate individual student differences, Mentora emerges as an innovative solution. It offers customized learning paths and practical guidance to help students achieve academic success and acquire the skills needed for the job market, aligning with the goals of Saudi Vision 2030.
@@ -144,3 +144,4 @@ Follow these steps to set up and run the project on your local machine:
    ```bash
    bun run build
    ```
+   **Note: in the future the website will be integrated with the university database to intelligently analyze students data**
