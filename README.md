@@ -47,8 +47,7 @@
 
 1. **استنساخ المستودع (Clone):**
    ```bash
-   git clone <repository-url>
-   cd my-learning-companion
+   git clone https://github.com/mentora3/my-learning-companion.git
    ```
 
 2. **تثبيت مدير الحزم Bun (لمستخدمي Windows):**
@@ -121,8 +120,7 @@ Follow these steps to set up and run the project on your local machine:
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
-   cd my-learning-companion
+   git clone https://github.com/mentora3/my-learning-companion.git
    ```
 
 2. **Install Bun (For Windows Users)**:
