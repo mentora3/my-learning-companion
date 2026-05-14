@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import logoUrl from "../assets/mentora-logo.png?url";
 import { AuthProvider, useAuth } from "../lib/auth";
 import { NotificationsProvider } from "../lib/notifications";
+import { MessagesProvider } from "../lib/messages";
 import { NotificationsMenu } from "../components/NotificationsMenu";
 import { ProfileMenu } from "../components/ProfileMenu";
 import { AiChat } from "../components/AiChat";
@@ -122,6 +123,7 @@ function AppShell() {
   const isMentor = user?.role === "mentor";
   return (
     <NotificationsProvider role={user!.role}>
+      <MessagesProvider>
       <div className="min-h-screen bg-background">
         <NavBar />
         <div className="max-w-5xl mx-auto px-4 pt-6">
@@ -143,6 +145,7 @@ function AppShell() {
         </main>
         <AiChat />
       </div>
+      </MessagesProvider>
     </NotificationsProvider>
   );
 }
