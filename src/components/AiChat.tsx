@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { Sparkles, X, Send, RefreshCw } from "lucide-react";
+import { Sparkles, X, Send, RefreshCw, ShieldCheck, Flag, Info } from "lucide-react";
 import { toast } from "sonner";
 import { useStudentProfile, type LearningStyle, STYLE_META } from "@/lib/student-profile";
+import { applySafety, reportAIResponse, AI_DISCLOSURE_AR, AI_PRIVACY_NOTICE_AR } from "@/lib/ai-safety";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
