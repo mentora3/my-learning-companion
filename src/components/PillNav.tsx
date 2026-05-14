@@ -5,7 +5,7 @@ const studentLinks = [
   { to: "/", label: "الرئيسية", exact: true },
   { to: "/plan", label: "خطتي" },
   { to: "/skills", label: "المهارات" },
-  { to: "/remedial", label: "الخطة التصحيحية" },
+  { to: "/remedial", label: "الخطة العلاجية" },
   { to: "/career", label: "المسار المهني" },
   { to: "/reports", label: "تقاريري" },
   { to: "/messages", label: "محادثاتي" },

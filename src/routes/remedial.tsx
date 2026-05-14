@@ -158,7 +158,9 @@ function RemedialPage() {
                     <li key={it.id}>
                       <button
                         onClick={() => toggleTask(it.id)}
-                        className={`w-full text-right flex items-start gap-2 text-sm rounded-lg p-2 hover:bg-muted/60 transition-colors text-foreground`}
+                        className={`w-full text-right flex items-start gap-2 text-sm rounded-lg p-2 hover:bg-muted/60 transition-colors ${
+                          done ? "text-muted-foreground line-through" : "text-foreground"
+                        }`}
                       >
                         <span
                           className={`mt-0.5 h-4 w-4 rounded border flex items-center justify-center shrink-0 ${
