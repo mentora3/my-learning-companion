@@ -47,6 +47,11 @@ const MessagesRoute = MessagesRouteImport.update({
   path: '/messages',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MentorRoute = MentorRouteImport.update({
   id: '/mentor',
   path: '/mentor',
@@ -75,6 +80,11 @@ const MentorStudentsRoute = MentorStudentsRouteImport.update({
 const MentorPlanningRoute = MentorPlanningRouteImport.update({
   id: '/planning',
   path: '/planning',
+  getParentRoute: () => MentorRoute,
+} as any)
+const MentorMessagesRoute = MentorMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
   getParentRoute: () => MentorRoute,
 } as any)
 const MentorMessagesRoute = MentorMessagesRouteImport.update({
