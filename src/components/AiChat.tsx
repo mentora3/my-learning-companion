@@ -51,7 +51,18 @@ export function AiChat() {
     const t = input.trim();
     if (!t || streaming) return;
 
-    const next: Msg[] = [...msgs, { role: "user", content: t }, { role: "assistant", content: "" }];
+    // طبقة السلامة والخصوصية: حجب PII ورفض المحتوى الخطر قبل الإرسال
+    const safety = applySafety(t);
+    if (!safety.safe) {
+      toast.error(`تم رفض الرسالة: ${safety.reason}`);
+      return;
+    }
+    if (safety.redactions.length) {
+      toast.message("🔒 لحماية خصوصيتك، تم إخفاء بيانات حساسة قبل الإرسال.");
+    }
+    const sanitized = safety.cleaned;
+
+    const next: Msg[] = [...msgs, { role: "user", content: sanitized }, { role: "assistant", content: "" }];
     setMsgs(next);
     setInput("");
     setStreaming(true);
