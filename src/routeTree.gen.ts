@@ -13,12 +13,14 @@ import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as RemedialRouteImport } from './routes/remedial'
 import { Route as PlanRouteImport } from './routes/plan'
+import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as MentorRouteImport } from './routes/mentor'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MentorIndexRouteImport } from './routes/mentor.index'
 import { Route as MentorStudentsRouteImport } from './routes/mentor.students'
 import { Route as MentorPlanningRouteImport } from './routes/mentor.planning'
+import { Route as MentorMessagesRouteImport } from './routes/mentor.messages'
 
 const SkillsRoute = SkillsRouteImport.update({
   id: '/skills',
@@ -38,6 +40,11 @@ const RemedialRoute = RemedialRouteImport.update({
 const PlanRoute = PlanRouteImport.update({
   id: '/plan',
   path: '/plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MentorRoute = MentorRouteImport.update({
@@ -70,15 +77,22 @@ const MentorPlanningRoute = MentorPlanningRouteImport.update({
   path: '/planning',
   getParentRoute: () => MentorRoute,
 } as any)
+const MentorMessagesRoute = MentorMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => MentorRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/mentor': typeof MentorRouteWithChildren
+  '/messages': typeof MessagesRoute
   '/plan': typeof PlanRoute
   '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
   '/skills': typeof SkillsRoute
+  '/mentor/messages': typeof MentorMessagesRoute
   '/mentor/planning': typeof MentorPlanningRoute
   '/mentor/students': typeof MentorStudentsRoute
   '/mentor/': typeof MentorIndexRoute
@@ -86,10 +100,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
+  '/messages': typeof MessagesRoute
   '/plan': typeof PlanRoute
   '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
   '/skills': typeof SkillsRoute
+  '/mentor/messages': typeof MentorMessagesRoute
   '/mentor/planning': typeof MentorPlanningRoute
   '/mentor/students': typeof MentorStudentsRoute
   '/mentor': typeof MentorIndexRoute
@@ -99,10 +115,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/mentor': typeof MentorRouteWithChildren
+  '/messages': typeof MessagesRoute
   '/plan': typeof PlanRoute
   '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
   '/skills': typeof SkillsRoute
+  '/mentor/messages': typeof MentorMessagesRoute
   '/mentor/planning': typeof MentorPlanningRoute
   '/mentor/students': typeof MentorStudentsRoute
   '/mentor/': typeof MentorIndexRoute
@@ -113,10 +131,12 @@ export interface FileRouteTypes {
     | '/'
     | '/career'
     | '/mentor'
+    | '/messages'
     | '/plan'
     | '/remedial'
     | '/reports'
     | '/skills'
+    | '/mentor/messages'
     | '/mentor/planning'
     | '/mentor/students'
     | '/mentor/'
@@ -124,10 +144,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/career'
+    | '/messages'
     | '/plan'
     | '/remedial'
     | '/reports'
     | '/skills'
+    | '/mentor/messages'
     | '/mentor/planning'
     | '/mentor/students'
     | '/mentor'
@@ -136,10 +158,12 @@ export interface FileRouteTypes {
     | '/'
     | '/career'
     | '/mentor'
+    | '/messages'
     | '/plan'
     | '/remedial'
     | '/reports'
     | '/skills'
+    | '/mentor/messages'
     | '/mentor/planning'
     | '/mentor/students'
     | '/mentor/'
@@ -149,6 +173,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CareerRoute: typeof CareerRoute
   MentorRoute: typeof MentorRouteWithChildren
+  MessagesRoute: typeof MessagesRoute
   PlanRoute: typeof PlanRoute
   RemedialRoute: typeof RemedialRoute
   ReportsRoute: typeof ReportsRoute
@@ -183,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/plan'
       fullPath: '/plan'
       preLoaderRoute: typeof PlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mentor': {
@@ -227,16 +259,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MentorPlanningRouteImport
       parentRoute: typeof MentorRoute
     }
+    '/mentor/messages': {
+      id: '/mentor/messages'
+      path: '/messages'
+      fullPath: '/mentor/messages'
+      preLoaderRoute: typeof MentorMessagesRouteImport
+      parentRoute: typeof MentorRoute
+    }
   }
 }
 
 interface MentorRouteChildren {
+  MentorMessagesRoute: typeof MentorMessagesRoute
   MentorPlanningRoute: typeof MentorPlanningRoute
   MentorStudentsRoute: typeof MentorStudentsRoute
   MentorIndexRoute: typeof MentorIndexRoute
 }
 
 const MentorRouteChildren: MentorRouteChildren = {
+  MentorMessagesRoute: MentorMessagesRoute,
   MentorPlanningRoute: MentorPlanningRoute,
   MentorStudentsRoute: MentorStudentsRoute,
   MentorIndexRoute: MentorIndexRoute,
@@ -249,6 +290,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CareerRoute: CareerRoute,
   MentorRoute: MentorRouteWithChildren,
+  MessagesRoute: MessagesRoute,
   PlanRoute: PlanRoute,
   RemedialRoute: RemedialRoute,
   ReportsRoute: ReportsRoute,
