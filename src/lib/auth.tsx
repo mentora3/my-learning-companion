@@ -14,16 +14,15 @@ const KEY = "mentora_user_v1";
 const Ctx = createContext<AuthCtx>({ user: null, loading: true, login: () => {}, logout: () => {} });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    if (typeof window === "undefined") return null;
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setUser(JSON.parse(raw));
+      if (raw) return JSON.parse(raw);
     } catch {}
-    setLoading(false);
-  }, []);
+    return null;
+  });
+  const loading = false;
 
   const login = (u: AuthUser) => {
     localStorage.setItem(KEY, JSON.stringify(u));
