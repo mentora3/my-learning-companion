@@ -16,6 +16,7 @@ import logoUrl from "../assets/mentora-logo.png?url";
 import { AuthProvider, useAuth } from "../lib/auth";
 import { NotificationsProvider } from "../lib/notifications";
 import { MessagesProvider } from "../lib/messages";
+import { StudentProfileProvider } from "../lib/student-profile";
 import { NotificationsMenu } from "../components/NotificationsMenu";
 import { ProfileMenu } from "../components/ProfileMenu";
 import { AiChat } from "../components/AiChat";
@@ -124,6 +125,7 @@ function AppShell() {
   return (
     <NotificationsProvider role={user!.role}>
       <MessagesProvider>
+      <StudentProfileProvider name={user!.name} email={user!.email} enabled={user!.role === "student"}>
       <div className="min-h-screen bg-background">
         <NavBar />
         <div className="max-w-5xl mx-auto px-4 pt-6">
@@ -145,6 +147,7 @@ function AppShell() {
         </main>
         <AiChat />
       </div>
+      </StudentProfileProvider>
       </MessagesProvider>
     </NotificationsProvider>
   );
