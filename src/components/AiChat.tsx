@@ -185,10 +185,15 @@ export function AiChat() {
             </button>
           </div>
 
+          <div className="mx-3 mt-3 flex items-start gap-2 rounded-lg bg-success/10 border border-success/20 p-2 text-[10px] leading-relaxed text-foreground/80">
+            <ShieldCheck className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
+            <span>{AI_PRIVACY_NOTICE_AR}</span>
+          </div>
+
           {ctx && (
             <button
               onClick={requestPlanChange}
-              className="mx-3 mt-3 inline-flex items-center justify-center gap-2 text-xs font-bold text-primary bg-primary/10 hover:bg-primary/20 rounded-lg py-2 transition-colors"
+              className="mx-3 mt-2 inline-flex items-center justify-center gap-2 text-xs font-bold text-primary bg-primary/10 hover:bg-primary/20 rounded-lg py-2 transition-colors"
             >
               <RefreshCw className="h-3.5 w-3.5" /> طلب تغيير أسلوب الخطة العلاجية
             </button>
@@ -196,7 +201,7 @@ export function AiChat() {
 
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-muted/30">
             {msgs.map((m, i) => (
-              <div key={i} className={`flex ${m.role === "user" ? "justify-start" : "justify-end"}`}>
+              <div key={i} className={`flex flex-col ${m.role === "user" ? "items-start" : "items-end"}`}>
                 <div
                   className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm whitespace-pre-wrap leading-relaxed ${
                     m.role === "user"
@@ -206,8 +211,28 @@ export function AiChat() {
                 >
                   {m.content || (streaming && i === msgs.length - 1 ? "…" : "")}
                 </div>
+                {m.role === "assistant" && m.content && (
+                  <div className="mt-1 flex items-center gap-2 text-[9px] text-muted-foreground">
+                    <Info className="h-2.5 w-2.5" />
+                    <span>محتوى مولَّد بالذكاء الاصطناعي</span>
+                    <button
+                      onClick={() => {
+                        reportAIResponse("بلاغ من الطالب", m.content);
+                        toast.success("تم تسجيل البلاغ. سيراجعه فريق المساءلة.");
+                      }}
+                      className="inline-flex items-center gap-0.5 text-destructive hover:underline"
+                      title={AI_DISCLOSURE_AR}
+                    >
+                      <Flag className="h-2.5 w-2.5" /> إبلاغ
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
+          </div>
+
+          <div className="px-3 pb-1 text-[9px] text-center text-muted-foreground">
+            🔒 محادثاتك لا تُستخدم لتدريب النماذج
           </div>
 
           <div className="p-3 border-t border-border flex gap-2">
