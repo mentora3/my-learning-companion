@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Send, Video, Calendar, Link2, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { useMessages, type ChatMessage } from "../lib/messages";
+import { pushNotificationFor } from "../lib/notifications";
 
 type Props = {
   studentEmail: string;
@@ -108,10 +109,17 @@ export function ChatThread({ studentEmail, studentName, studentAvatar, viewerRol
           onClose={() => setMeetingOpen(false)}
           onSubmit={(info) => {
             requestMeeting(studentEmail, viewerRole, info);
+            const recipientRole = viewerRole === "student" ? "mentor" : "student";
+            const senderName = viewerRole === "student" ? studentName : mentorName || "المرشد الأكاديمي";
+            pushNotificationFor(recipientRole, {
+              title: "طلب اجتماع جديد 🎥",
+              body: `${senderName} طلب اجتماعًا: ${info.topic} — ${info.date} ${info.time}`,
+              tone: "info",
+            });
             toast.success(
               info.type === "in-platform"
-                ? "تم إنشاء غرفة اجتماع داخل المنصة 🎥"
-                : "تم إنشاء رابط Google Meet 🔗"
+                ? "تم إنشاء غرفة اجتماع داخل المنصة 🎥 وأُشعِر الطرف الآخر"
+                : "تم إنشاء رابط Google Meet 🔗 وأُشعِر الطرف الآخر"
             );
             setMeetingOpen(false);
           }}
