@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type Notification = {
   id: string;
@@ -21,6 +21,36 @@ const mentorSeed: Notification[] = [
   { id: "m3", title: "مجموعتك في تقدّم", body: "متوسط الأداء ارتفع +5% هذا الأسبوع.", time: "أمس", tone: "success", read: true },
 ];
 
+const storeKey = (role: "student" | "mentor") => `mentora_notifications_${role}`;
+
+function readStored(role: "student" | "mentor"): Notification[] {
+  try {
+    const raw = localStorage.getItem(storeKey(role));
+    return raw ? (JSON.parse(raw) as Notification[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeStored(role: "student" | "mentor", list: Notification[]) {
+  try {
+    localStorage.setItem(storeKey(role), JSON.stringify(list));
+    window.dispatchEvent(new CustomEvent("mentora:notifications", { detail: { role } }));
+  } catch {
+    // ignore
+  }
+}
+
+/** Push a notification to a specific role's inbox (persists across sessions). */
+export function pushNotificationFor(role: "student" | "mentor", n: Omit<Notification, "id" | "read" | "time">) {
+  const list = readStored(role);
+  const next: Notification[] = [
+    { id: `p-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, read: false, time: "الآن", ...n },
+    ...list,
+  ];
+  writeStored(role, next);
+}
+
 type NCtx = {
   notifications: Notification[];
   unread: number;
@@ -32,15 +62,49 @@ type NCtx = {
 const Ctx = createContext<NCtx>({} as NCtx);
 
 export function NotificationsProvider({ children, role }: { children: ReactNode; role: "student" | "mentor" }) {
-  const [list, setList] = useState<Notification[]>(role === "mentor" ? mentorSeed : studentSeed);
+  const [list, setList] = useState<Notification[]>(() => {
+    const seed = role === "mentor" ? mentorSeed : studentSeed;
+    return [...readStored(role), ...seed];
+  });
+
+  // Re-sync when other tabs/components push to this role's inbox.
+  useEffect(() => {
+    const sync = () => {
+      const seed = role === "mentor" ? mentorSeed : studentSeed;
+      const stored = readStored(role);
+      setList((prev) => {
+        // keep read-state of seeds, prepend any new stored items not already in list
+        const known = new Set(prev.map((n) => n.id));
+        const fresh = stored.filter((n) => !known.has(n.id));
+        return fresh.length ? [...fresh, ...prev] : prev;
+      });
+      // Touch seed reference to silence linter when unused branch
+      void seed;
+    };
+    const onCustom = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { role?: string } | undefined;
+      if (!detail || detail.role === role) sync();
+    };
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === storeKey(role)) sync();
+    };
+    window.addEventListener("mentora:notifications", onCustom);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("mentora:notifications", onCustom);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, [role]);
 
   const value: NCtx = {
     notifications: list,
     unread: list.filter((n) => !n.read).length,
     markAllRead: () => setList((l) => l.map((n) => ({ ...n, read: true }))),
     markRead: (id) => setList((l) => l.map((n) => (n.id === id ? { ...n, read: true } : n))),
-    push: (n) =>
-      setList((l) => [{ id: Date.now().toString(), read: false, time: "الآن", ...n }, ...l]),
+    push: (n) => {
+      pushNotificationFor(role, n);
+      setList((l) => [{ id: `p-${Date.now()}`, read: false, time: "الآن", ...n }, ...l]);
+    },
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
