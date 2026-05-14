@@ -19,7 +19,7 @@ function StudentMessagesPage() {
       <div>
         <h1 className="text-3xl">محادثاتي 💬</h1>
         <p className="text-muted-foreground mt-1">
-          تواصل مباشر مع مرشدك الأكاديمي داخل المنصة — بدون الحاجة لبرامج خارجية.
+          تواصل مباشر مع مرشدك الأكاديمي داخل المنصة.
         </p>
       </div>
       <ChatThread

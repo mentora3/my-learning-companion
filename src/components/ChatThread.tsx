@@ -285,7 +285,7 @@ function MeetingDialog({
                   <Video className="h-3.5 w-3.5" /> داخل المنصة
                 </div>
                 <div className="font-normal text-[10px] text-muted-foreground">
-                  افتراضي — بدون برامج خارجية
+                  افتراضي
                 </div>
               </button>
               <button
