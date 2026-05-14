@@ -21,6 +21,7 @@ import { Route as MentorIndexRouteImport } from './routes/mentor.index'
 import { Route as MentorStudentsRouteImport } from './routes/mentor.students'
 import { Route as MentorPlanningRouteImport } from './routes/mentor.planning'
 import { Route as MentorMessagesRouteImport } from './routes/mentor.messages'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 
 const SkillsRoute = SkillsRouteImport.update({
   id: '/skills',
@@ -82,6 +83,11 @@ const MentorMessagesRoute = MentorMessagesRouteImport.update({
   path: '/messages',
   getParentRoute: () => MentorRoute,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
   '/skills': typeof SkillsRoute
+  '/api/chat': typeof ApiChatRoute
   '/mentor/messages': typeof MentorMessagesRoute
   '/mentor/planning': typeof MentorPlanningRoute
   '/mentor/students': typeof MentorStudentsRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
   '/skills': typeof SkillsRoute
+  '/api/chat': typeof ApiChatRoute
   '/mentor/messages': typeof MentorMessagesRoute
   '/mentor/planning': typeof MentorPlanningRoute
   '/mentor/students': typeof MentorStudentsRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/remedial': typeof RemedialRoute
   '/reports': typeof ReportsRoute
   '/skills': typeof SkillsRoute
+  '/api/chat': typeof ApiChatRoute
   '/mentor/messages': typeof MentorMessagesRoute
   '/mentor/planning': typeof MentorPlanningRoute
   '/mentor/students': typeof MentorStudentsRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/remedial'
     | '/reports'
     | '/skills'
+    | '/api/chat'
     | '/mentor/messages'
     | '/mentor/planning'
     | '/mentor/students'
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/remedial'
     | '/reports'
     | '/skills'
+    | '/api/chat'
     | '/mentor/messages'
     | '/mentor/planning'
     | '/mentor/students'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/remedial'
     | '/reports'
     | '/skills'
+    | '/api/chat'
     | '/mentor/messages'
     | '/mentor/planning'
     | '/mentor/students'
@@ -178,6 +190,7 @@ export interface RootRouteChildren {
   RemedialRoute: typeof RemedialRoute
   ReportsRoute: typeof ReportsRoute
   SkillsRoute: typeof SkillsRoute
+  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -266,6 +279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MentorMessagesRouteImport
       parentRoute: typeof MentorRoute
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -295,17 +315,8 @@ const rootRouteChildren: RootRouteChildren = {
   RemedialRoute: RemedialRoute,
   ReportsRoute: ReportsRoute,
   SkillsRoute: SkillsRoute,
+  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
