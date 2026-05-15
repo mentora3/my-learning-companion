@@ -35,7 +35,7 @@ function Home() {
         <div className="absolute -left-10 -top-10 w-48 h-48 rounded-full bg-primary/30 blur-3xl" />
         <div className="relative">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-nav-foreground/80 text-sm font-medium">مؤشر الأداء العام</h3>
+            <h3 className="text-nav-foreground/80 text-sm font-medium">مؤشر الأداء العام:</h3>
             <span className="text-xs px-2 py-1 rounded-full bg-success/20 text-success">جيد</span>
           </div>
           <div className="flex items-end gap-3 mb-4">
